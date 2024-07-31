@@ -1,13 +1,57 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle } from 'styled-components';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import CadastroUsuarios from './pages/CadastroUsuarios';
+import LoginUsuarios from './pages/LoginUsuarios';
+import Home from './pages/Home';
+import CadastroProdutos from './pages/CadastroProdutos';
+
+
+
+const GlobalStyle = createGlobalStyle`
+
+* {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+`;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <GlobalStyle />
+    <BrowserRouter>
+    
+    <Header />
+    <Routes>
+        <Route path='/' element ={<Home />} />
+        <Route path='/cadastro-usuarios' element ={<CadastroUsuarios />} />
+        <Route path='/login' element ={<LoginUsuarios />} />
+        <Route path='/cadastro-produtos' element ={<CadastroProdutos />} />
+    </Routes>
+    <Footer />
+    
+    </BrowserRouter>
+    
   </React.StrictMode>
 );
 
