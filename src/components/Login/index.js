@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import fundoCadastro from '../../images/fundoCadastro.png';
+import { ToastContainer } from 'react-toastify';
 import { Link } from "react-router-dom";
+import { autenticateUser } from '../../scripts/UsersProvider';
 
 const Container = styled.div`
   display: flex;
@@ -110,18 +112,29 @@ const Imagem = styled.section`
 
 
 const Login = () => {
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+
+    // Chama a função de registro
+    autenticateUser(email, senha);
+  };
+
+
   return (
     <Container>
-      
+      <ToastContainer />
       <MainContent id="main-content">
         <Formulario className="formulario">
           <Titulo>Login</Titulo>
-          <FormLogin>
+          <FormLogin onSubmit={handleLogin}>
             <LabelLogin htmlFor="email">Endereço de email</LabelLogin>
-            <InputLogin type="email" id="email" />
+            <InputLogin type="email" id="email" required/>
 
             <LabelLogin htmlFor="senha">Senha</LabelLogin>
-            <InputLogin type="password" id="senha" />
+            <InputLogin type="password" id="senha" required/>
 
             <BotaoLogin type="submit">Login</BotaoLogin>
 

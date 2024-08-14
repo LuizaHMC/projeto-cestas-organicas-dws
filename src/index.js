@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
@@ -9,6 +10,7 @@ import CadastroUsuarios from './pages/CadastroUsuarios';
 import LoginUsuarios from './pages/LoginUsuarios';
 import Home from './pages/Home';
 import CadastroProdutos from './pages/CadastroProdutos';
+import Carrinho from './pages/Carrinho';
 
 
 
@@ -47,6 +49,8 @@ root.render(
         <Route path='/cadastro-usuarios' element ={<CadastroUsuarios />} />
         <Route path='/login' element ={<LoginUsuarios />} />
         <Route path='/cadastro-produtos' element ={<CadastroProdutos />} />
+        <Route path='/carrinho' element ={<Carrinho />}/>
+        <Route path='/:category' element={<Home />} /> 
     </Routes>
     <Footer />
     

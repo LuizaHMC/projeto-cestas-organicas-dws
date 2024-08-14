@@ -4,7 +4,7 @@ import fundoCadastro from '../../images/fundoCadastro.png';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { register } from '../../scripts/AutenticacaoUsuarios';
+import { register } from '../../scripts/UsersProvider';
 
 
 const Container = styled.div`
@@ -72,45 +72,10 @@ const InputForm = styled.input`
 
 `;
 
-const LinhaForm = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-
-    @media (max-width: 970px) {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-`;
-
-const FotoForm = styled.div`
-    display: flex;
-  flex-direction: column;
-  margin-right: 20px;
-
-  label {
-    margin-bottom: 5px;
-  }
-
-  input[type="file"] {
-    padding: 10px;
-    font-size: 1em;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #848484;
-  }
-
-  @media (max-width: 970px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-`;
-
 const BotaoCadastro = styled.button`
     padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -156,7 +121,7 @@ const FormCadastroUsuarios = () => {
     const nome = document.getElementById('nome').value;
 
     // Chama a função de registro
-    register(email, senha);
+    register(email, senha, endereco, foto, nome);
   };
 
   return (
@@ -179,13 +144,11 @@ const FormCadastroUsuarios = () => {
           <LabelForm htmlFor="senha">Senha *</LabelForm>
           <InputForm type="password" id="senha" required />
 
-          <LinhaForm>
-            <FotoForm>
-              <label htmlFor="foto">Foto</label>
-              <input type="file" id="foto" />
-            </FotoForm>
-            <BotaoCadastro type="submit">Cadastrar</BotaoCadastro>
-          </LinhaForm>
+          <LabelForm htmlFor="foto">Foto</LabelForm>
+          <InputForm type="text" id="foto" />
+            
+          <BotaoCadastro type="submit">Cadastrar</BotaoCadastro>
+          
           <p>Já possui conta? Faça o <Link to='/login' className="path-login">Login</Link></p>
         </FormularioContent>
 

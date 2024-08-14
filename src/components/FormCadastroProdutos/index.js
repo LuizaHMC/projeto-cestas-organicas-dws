@@ -1,6 +1,9 @@
+
 import React from 'react';
 import styled from 'styled-components';
 import imgCadastroProdutos from '../../images/fundoCadastro.png';
+import { storeProduct } from '../../scripts/ProductsProvider';
+import { ToastContainer } from 'react-toastify';
 
 const MainContent = styled.main`
   display: flex;
@@ -48,37 +51,6 @@ const SectionCadastroProdutos = styled.section`
   }
 `;
 
-const LinhaForm = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-
-  @media (max-width: 970px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
-const FotoForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 20px;
-
-  label {
-    margin-bottom: 5px;
-  }
-
-  input[type="file"] {
-    margin-bottom: 10px;
-  }
-
-  @media (max-width: 970px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-`;
-
 const BotaoCadastro = styled.button`
   padding: 10px;
   background-color: #4CAF50;
@@ -113,11 +85,25 @@ const DivImagemCadastroProdutos = styled.section`
 `;
 
 const FormCadastroProdutos = () => {
+
+  const handleProducts = (event) => {
+    event.preventDefault();
+    const name = document.getElementById('productName').value;
+    const description = document.getElementById('productDescription').value;
+    const quantity = document.getElementById('productQuantity').value;
+    const category = document.getElementById('productCategory').value;
+    const productPhoto = document.getElementById('productPhoto').value;
+
+    // Chama a função de registro
+    storeProduct(name, description, quantity, category, productPhoto);
+  };
+
   return (
     <MainContent>
+      <ToastContainer />
       <SectionCadastroProdutos>
         <h1>Cadastrar produtos</h1>
-        <form id="formCadastroProdutos">
+        <form id="formCadastroProdutos" onSubmit={handleProducts}>
           <label htmlFor="productName">Nome do produto:</label>
           <input type="text" id="productName" name="productName" required />
 
@@ -125,7 +111,7 @@ const FormCadastroProdutos = () => {
           <input type="text" id="productDescription" name="productDescription" required />
 
           <label htmlFor="productQuantity">Quantidade do produto:</label>
-          <input type="number" id="productQuantity" name="productQuantity" value="1" min="1" />
+          <input type="number" id="productQuantity" name="productQuantity" min="1" />
 
           <label htmlFor="productCategory">Categoria do produto:</label>
           <select name="productCategory" id="productCategory">
@@ -134,13 +120,11 @@ const FormCadastroProdutos = () => {
             <option value="fruta">Fruta</option>
           </select>
 
-          <LinhaForm>
-            <FotoForm>
-              <label htmlFor="productPhoto">Foto do produto:</label>
-              <input type="file" name="productPhoto" id="productPhoto" accept="image/*" />
-            </FotoForm>
+          <label htmlFor="productPhoto">URL da foto do produto:</label>
+          <input type="text" id="productPhoto" required/>
+
             <BotaoCadastro type="submit" form="formCadastroProdutos">Cadastrar</BotaoCadastro>
-          </LinhaForm>
+          
         </form>
       </SectionCadastroProdutos>
       <DivImagemCadastroProdutos>

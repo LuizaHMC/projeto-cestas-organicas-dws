@@ -1,7 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../scripts/env';
+import { useParams } from 'react-router-dom';
+import { getProductsCategory } from '../scripts/ProductsProvider';
 
 const Container = styled.div`
   display: flex;
@@ -48,20 +51,31 @@ const Button = styled.button`
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+    background-color: #45a049;
+  }
 `;
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const { category } = useParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const colRef = collection(db, 'products');
-        const snapshot = await getDocs(colRef);
-        const productsData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        let productsData = [];
+        if (!category || category === 'todas') {
+          const colRef = collection(db, 'products');
+          const snapshot = await getDocs(colRef);
+          productsData = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+        } else {
+          productsData = await getProductsCategory(category.toLowerCase());
+        }
+
         setProducts(productsData);
       } catch (error) {
         console.error('Erro ao obter produtos:', error);
@@ -69,9 +83,10 @@ function Home() {
     };
 
     fetchProducts();
-  }, []);
+  }, [category]);
 
   return (
+
     <Container>
       <Content>
         <ProductsSection>
@@ -79,7 +94,7 @@ function Home() {
             <ProductCard key={product.id}>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
-              <ProductImage src={product.img} alt={product.name} />
+              <ProductImage src={product.photo} alt={product.name} />
               <Button>Adicionar</Button>
             </ProductCard>
           ))}

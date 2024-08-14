@@ -1,9 +1,11 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo.png';
 import lupaBusca from '../../images/lupaBusca.png';
 import carrinho from '../../images/carrinho.png';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { auth } from '../../scripts/env';
 
 const HeaderContainer = styled.header`
 `;
@@ -118,6 +120,23 @@ const Divisor = styled.hr`
 `
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
+  
+
   return (
     <HeaderContainer>
       <TopBar>
@@ -126,23 +145,26 @@ const Header = () => {
           <input type="search" placeholder="Buscar por produtos..." className="search-bar" />
         </BuscaContainer>
         <LinksContainer>
-          <Link to='cadastro-produtos'>Cadastrar um produto</Link>
-          <Link to='/cadastro-usuarios'>Entre ou cadastre-se</Link>
-          <Link to='/login' className="carrinho-link">
+          <NavLink to={isLoggedIn ? '/cadastro-produtos' : '/login'}>Cadastrar um produto</NavLink>
+          <NavLink to='/cadastro-usuarios'>Entre ou cadastre-se</NavLink>
+          <NavLink to={isLoggedIn ? '/carrinho' : '/login'} className="carrinho-link">
             <span>Meu carrinho</span>
-          </Link>
+          </NavLink>
         </LinksContainer>
       </TopBar>
 
       <NavBar>
+      <Divisor/>
+        <NavLink to='/legume' className="link">Legumes</NavLink>
         <Divisor/>
-        <Link to='/' className="link">Legumes</Link>
+        <NavLink to='/verdura' className="link">Verduras</NavLink>
         <Divisor/>
-        <Link to='/' className="link">Verduras</Link>
+        <NavLink to='/fruta' className="link">Frutas</NavLink>
         <Divisor/>
-        <Link to='/' className="link">Frutas</Link>
+        <NavLink to='/' className="link">Todas</NavLink>
         <Divisor/>
       </NavBar>
+
     </HeaderContainer>
   );
 }
