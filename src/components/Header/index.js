@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import logo from '../../images/logo.png';
 import lupaBusca from '../../images/lupaBusca.png';
 import carrinho from '../../images/carrinho.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from '../../scripts/env';
 
 const HeaderContainer = styled.header`
@@ -121,6 +121,8 @@ const Divisor = styled.hr`
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -135,14 +137,29 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
-  
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  useEffect(() => {
+    // Redireciona para a página de pesquisa quando o termo de busca mudar
+    if (searchTerm) {
+      navigate(`/search/${searchTerm}`);
+    }
+  }, [searchTerm, navigate]);
 
   return (
     <HeaderContainer>
       <TopBar>
         <img src={logo} alt="Logo" className="logo" />
         <BuscaContainer>
-          <input type="search" placeholder="Buscar por produtos..." className="search-bar" />
+          <input 
+          type="search" 
+          placeholder="Buscar por produtos..." 
+          className="search-bar"
+          value={searchTerm}
+          onChange={handleSearch}
+          />
         </BuscaContainer>
         <LinksContainer>
           <NavLink to={isLoggedIn ? '/cadastro-produtos' : '/login'}>Cadastrar um produto</NavLink>

@@ -35,3 +35,16 @@ export const getProductsCategory = async (category) => {
     }
 };
 
+export const getProductsName = async (name) => {
+    try {
+        const q = query(collection(db, 'products'), where('name', '>=', name), where('name', '<=', name + '\uf8ff'));
+        const querySnapshot = await getDocs(q);
+
+        const products = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return products;
+    } catch (error) {
+        console.error('Erro ao buscar produtos por nome:', error);
+        throw error;
+    }
+};
+

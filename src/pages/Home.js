@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../scripts/env';
 import { useParams } from 'react-router-dom';
-import { getProductsCategory } from '../scripts/ProductsProvider';
+import { getProductsCategory, getProductsName } from '../scripts/ProductsProvider';
 
 const Container = styled.div`
   display: flex;
@@ -59,13 +59,16 @@ const Button = styled.button`
 
 function Home() {
   const [products, setProducts] = useState([]);
-  const { category } = useParams();
+  const { category, searchTerm } = useParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         let productsData = [];
-        if (!category || category === 'todas') {
+        
+        if (searchTerm) {
+          productsData = await getProductsName(searchTerm);
+        } else if (!category || category === 'todas') {
           const colRef = collection(db, 'products');
           const snapshot = await getDocs(colRef);
           productsData = snapshot.docs.map(doc => ({
@@ -83,7 +86,7 @@ function Home() {
     };
 
     fetchProducts();
-  }, [category]);
+  }, [category, searchTerm]);
 
   return (
 

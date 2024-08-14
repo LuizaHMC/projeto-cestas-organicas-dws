@@ -50,7 +50,8 @@ root.render(
         <Route path='/login' element ={<LoginUsuarios />} />
         <Route path='/cadastro-produtos' element ={<CadastroProdutos />} />
         <Route path='/carrinho' element ={<Carrinho />}/>
-        <Route path='/:category' element={<Home />} /> 
+        <Route path='/:category' element={<Home />} />
+        <Route path='/search/:searchTerm' element={<Home />} />
     </Routes>
     <Footer />
     
