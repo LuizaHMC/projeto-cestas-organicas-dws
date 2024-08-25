@@ -92,11 +92,10 @@ const FormCadastroProdutos = () => {
     const description = document.getElementById('productDescription').value;
     const quantity = document.getElementById('productQuantity').value;
     const category = document.getElementById('productCategory').value;
-    const prize = document.getElementById('prize').value;
     const productPhoto = document.getElementById('productPhoto').value;
 
     // Chama a função de registro
-    storeProduct(name, description, quantity, category, productPhoto, prize);
+    storeProduct(name, description, quantity, category, productPhoto);
   };
 
   return (
@@ -120,9 +119,6 @@ const FormCadastroProdutos = () => {
             <option value="verdura">Verdura</option>
             <option value="fruta">Fruta</option>
           </select>
-
-          <label htmlFor="prize">Preço do produto:</label>
-          <input type="number" id="prize" required/>
 
           <label htmlFor="productPhoto">URL da foto do produto:</label>
           <input type="text" id="productPhoto" required/>
